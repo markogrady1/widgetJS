@@ -1,5 +1,5 @@
 # widgit.js
-##### A widget to display your GitHub repositories within your website.
+##### Library that provides small GitHub widgets to display various GitHub information.
 - Overview of GitHub account widget.
 ```html
 <script type="text/javascript" src="src/js/widgit.js"></script>
