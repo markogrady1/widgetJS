@@ -4,18 +4,19 @@
 var Widgit = (function() {
 
 	//ADD STYLES
+	
 	var style = document.currentScript.src;
 	var styles = document.getElementsByTagName("script");
 	var newPath = style.split("widgit.js")[0];
 	newPath = newPath + "css/widgit.css"
-    var head = document.querySelectorAll("head")[0];
-    var link = create("link");
-    attr(link, "rel", "stylesheet");
-    attr(link, "href", newPath);
-    var link2 = create("link");
-    attr(link2, "rel", "stylesheet");
-    attr(link2, "href", "https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.css");
-    appendElement(head, link, link2);
+ 	var head = document.querySelectorAll("head")[0];
+ 	var link = create("link");
+ 	attr(link, "rel", "stylesheet");
+ 	attr(link, "href", newPath);
+ 	var link2 = create("link");
+ 	attr(link2, "rel", "stylesheet");
+ 	attr(link2, "href", "https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.css");
+ 	appendElement(head, link, link2);
 
 
     function reposWidget(selector, username, amount) {
