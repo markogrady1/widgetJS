@@ -1,5 +1,5 @@
 # widgit.js
-##### Library that provides small GitHub widgets to display various GitHub information.
+##### Library that provides small GitHub widgets to display various GitHub information directly into your website.
 - Overview of GitHub account widget.
 ```html
 <script type="text/javascript" src="src/js/widgit.js"></script>
