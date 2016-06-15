@@ -6,7 +6,7 @@
 ```
 ####The overview widget.
 ```html
-<div class='some-classname></div>
+<div class='some-classname'></div>
 ```
 Simply call the relevant widget function and pass it a location and your GitHub username
 ```javascript
@@ -21,7 +21,7 @@ This will result in the following widget.
 ####The repo list widget.
 
 ```html
-<div class='another-classname></div>
+<div class='another-classname'></div>
 ```
 Simply call the relevant widget function and pass it a location, your GitHub username and the amount of repos you wish to display
 ```javascript
