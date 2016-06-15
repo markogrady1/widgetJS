@@ -7,7 +7,7 @@ var Widgit = (function() {
 	var head = document.querySelectorAll("head")[0];
 	var link = create("link");
 	attr(link, "rel", "stylesheet");
-	attr(link, "href", "src/css/widgit.css");
+	attr(link, "href", "css/widgit.css");
 	appendElement(head, link);
 
 	function overviewWidget(selector, username) {
