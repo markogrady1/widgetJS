@@ -3,12 +3,11 @@
 
 var Widgit = (function() {
 
-	//ADD STYLE SHEET
+	//ADD STYLES
 	var style = document.currentScript.src;
 	var styles = document.getElementsByTagName("script");
 	var newPath = style.split("widgit.js")[0];
 	newPath = newPath + "css/widgit.css"
-
     var head = document.querySelectorAll("head")[0];
     var link = create("link");
     attr(link, "rel", "stylesheet");
@@ -16,17 +15,14 @@ var Widgit = (function() {
     var link2 = create("link");
     attr(link2, "rel", "stylesheet");
     attr(link2, "href", "https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.css");
-
     appendElement(head, link, link2);
 
 
     function reposWidget(selector, username, amount) {
         apiRequest(username, {"urlParam":"users", "targetParam":"repos"} , function(res) {
-
             var data = JSON.parse(res);
-            data = data.splice(0, amount);
-
-            console.log(data)
+            if(amount != null)
+            	data = data.splice(0, amount);
             var key = ["name", "full_name", "language", "fork", "html_url"];
             var repoArr = [];
             for(var i in data) {
@@ -41,7 +37,6 @@ var Widgit = (function() {
                     username: data[i].owner.login
                 });
             }
-            console.log(repoArr);
             createType("repos", repoArr, selector);
         });
     }
@@ -79,19 +74,12 @@ var Widgit = (function() {
             return;
         } else {
             buildElem(arr, elem, selector);
-            //if(widgetType === "repos") {
-            //    repo(arr, elem, selector);
-            //    buildElem(arr, elem, selector)
-            //} else if (widgetType === "overview") {
-            //    buildElem(arr, elem, selector)
-            //    overview(arr,elem,  selector);
-            //}
         }
     }
 
     function buildElem(arr, elem, selector) {
         var prependStr = typeof arr[0] == "object" ? "repo__" : "o__";
-        var el = create("div")
+        var el = create("div");
         attr(el, "class", prependStr + "view-wrap");
         addTitle(el, arr);
         el = createElem(el, "div",1);
@@ -109,12 +97,12 @@ var Widgit = (function() {
 
 
     function repo(arr, elem, selector) {
-        addAvatar(".repo__view-wrap", arr)
+        addAvatar(".repo__view-wrap", arr);
     }
 
     function overview(arr, elem, selector) {
         addData(selector, arr);
-        addAvatar(".o__view-wrap", arr)
+        addAvatar(".o__view-wrap", arr);
     }
 
 	function addTitle(elem, arr) {
@@ -137,17 +125,16 @@ var Widgit = (function() {
             link = data[0].owner_url;
         }
 
-		var elem = document.querySelectorAll(element + " div")[0]
+		var elem = document.querySelectorAll(element + " div")[0];
 		elem.innerHTML = "<a href=" + link + " target=__blank><img class=avatar src=" + avatar + "></a>";
 		attr(elem, "class", "header");
         var title = (typeof data[0] !== "object") ? attr(elem, "class", "header"): attr(elem, "class", "header-repo");
-        //elem.innerHTML = title;
 	}
 
 	function addData(option, data) {
 		if(typeof option === "string") {
-			var strings = ["Repos", "Gists", "Followers"]
-			var d = document.querySelectorAll(option + " li")
+			var strings = ["Repos", "Gists", "Followers"];
+			var d = document.querySelectorAll(option + " li");
 			for(var i = 0; i < d.length; i++) {
 				d[i].innerHTML = "<span class=__" + i + ">" + strings[i] + "</span>" +  data[i] ;
 			}
@@ -164,7 +151,7 @@ var Widgit = (function() {
 				});
 				}(i))
 			}
-			baseEl.appendChild(el)
+			baseEl.appendChild(el);
 		}
 		return baseEl;
 	}
@@ -178,7 +165,7 @@ var Widgit = (function() {
             var icon = data[i].fork ? "<span class='octicon octicon-repo-forked icon'></span>":"<span class='octicon octicon-repo icon'></span>";
             el.innerHTML = icon + "<span class=name>"+data[i].name+"</span><span class=lang>"+data[i].language+"</span>"
             a.appendChild(el);       
-            baseEl.appendChild(a)
+            baseEl.appendChild(a);
         }
         return baseEl;
     }
@@ -198,20 +185,20 @@ var Widgit = (function() {
 	}
 	
 	function createWrap(elem, obj) {
-		var el = create("div")
+		var el = create("div");
 		attr(el, obj, "o__view-wrap");
 	}
 	
 	function appendElement(baseEl) {
 		for(var i = 1; i < arguments.length; i++) {
-			baseEl.appendChild(arguments[i])
+			baseEl.appendChild(arguments[i]);
 		}
 	}
 	
 	function create(el,  tx) {
 		var el = document.createElement(el);
 		if(typeof tx !== "undefined") {
-			el.appendChild(document.createTextNode(tx))
+			el.appendChild(document.createTextNode(tx));
 		}
 		return el;
 	}
@@ -233,7 +220,3 @@ var Widgit = (function() {
 	}
 
 })();
-
-// Widgit.repos(".repo-widgit-test", "markogrady1");
-
-
