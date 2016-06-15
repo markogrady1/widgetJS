@@ -26,7 +26,7 @@ This will result in the following widget.
 Simply call the relevant widget function and pass it a location, your GitHub username and the amount of repos you wish to display
 ```javascript
 <script>
-    Widgit.overview(".another-classname", "markogrady1", 10);
+    Widgit.repos(".another-classname", "markogrady1", 10);
 </script>
 ```
 This will result in the following widget.
