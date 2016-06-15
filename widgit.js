@@ -7,7 +7,7 @@ var Widgit = (function() {
 	var style = document.currentScript.src;
 	var styles = document.getElementsByTagName("script");
 	var newPath = style.split("widgit.js")[0];
-	newPath = newPath + "/css/widgit.css"
+	newPath = newPath + "css/widgit.css"
 
     var head = document.querySelectorAll("head")[0];
     var link = create("link");
@@ -109,30 +109,10 @@ var Widgit = (function() {
 
 
     function repo(arr, elem, selector) {
-        //var el = create("div")
-        //attr(el, "class", "repo__view-wrap");
-        //addTitle(el, arr);
-        //el = createElem(el, "div",1);
-        //var ul = create("ul")
-        //attr(ul, "class", "repo__ul");
-        //ul = createRepoElem(ul, "li",3, arr,  true);
-        //appendElement(el, ul)
-        //elem.appendChild(el)
-        //addData(selector, arr);
         addAvatar(".repo__view-wrap", arr)
-
     }
 
     function overview(arr, elem, selector) {
-        //var el = create("div")
-        //attr(el, "class", "o__view-wrap");
-        //addTitle(el, arr);
-        //el = createElem(el, "div",1);
-        //var ul = create("ul")
-        //attr(ul, "class", "o__ul");
-        //ul = createElem(ul, "li",3, arr,  true);
-        //appendElement(el, ul)
-        //elem.appendChild(el)
         addData(selector, arr);
         addAvatar(".o__view-wrap", arr)
     }
