@@ -13,4 +13,8 @@ Simply call the relevant widget function and pass it a location and your GitHub 
     Widgit.overview(".some-classname", "markogrady1");
 </script>
 ```
+This will result in the following widget.
+
+![checkmark]( https://github.com/markogrady1/widgit.js/raw/master/demo/overview.png)
+
 ***NOTE: widgets are still being constructed.***
