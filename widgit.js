@@ -12,7 +12,7 @@ var Widgit = (function() {
             var containResult = styles[i].src.indexOf("widgit.js") != -1;
             if(containResult){
                 var newPath = styles[i].src.split("widgit.js")[0];
-                newPath = newPath + "css/widgit.css"
+                newPath = newPath + "/css/widgit.css"
             }
         }
     }
