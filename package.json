@@ -1,0 +1,15 @@
+{
+  "name": "widgit.js",
+  "version": "0.0.1",
+  "description": "A widget to display your GitHub repositories within your website. ",
+  "main": "widgit.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markogrady1/widgit.js.git"
+  },
+  "author": {
+    "name": "Mark O Grady",
+    "email": "markogrady18@gmail.com",
+    "url": "http://www.thereformat.com"
+  },
+}
