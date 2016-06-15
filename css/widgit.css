@@ -20,6 +20,7 @@
     background-color: #fff;
     border-radius: 4px;
     color: #666;
+    box-shadow: 2px 2px 5px #999;
 }
 .o__view-wrap li:hover, .repo__view-wrap li:hover {
 	color: #428bca;
