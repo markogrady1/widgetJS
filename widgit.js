@@ -4,25 +4,18 @@
 var Widgit = (function() {
 
 	//ADD STYLE SHEET
-	
-    var styles = document.getElementsByTagName("script");
-    for (var i in styles) {
+	var style = document.currentScript.src;
+	var styles = document.getElementsByTagName("script");
+	var newPath = style.split("widgit.js")[0];
+	newPath = newPath + "/css/widgit.css"
 
-        if(typeof  styles[i].src != "undefined") {
-            var containResult = styles[i].src.indexOf("widgit.js") != -1;
-            if(containResult){
-                var newPath = styles[i].src.split("widgit.js")[0];
-                newPath = newPath + "/css/widgit.css"
-            }
-        }
-    }
     var head = document.querySelectorAll("head")[0];
     var link = create("link");
     attr(link, "rel", "stylesheet");
     attr(link, "href", newPath);
     appendElement(head, link);
 
-    
+
 	function overviewWidget(selector, username) {
 		apiRequest(username, "users", function(res) {
 			var data = JSON.parse(res);
