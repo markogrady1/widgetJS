@@ -11,9 +11,26 @@
 	box-shadow: 2px 2px 5px #999;
 
 }
-.o__view-wrap li:hover {
+
+.repo__view-wrap {
+    font-family: "Helvetica",Arial,sans-serif;
+    position: relative;
+    border: 1px solid #E6E6E6;
+    width: 310px;
+    background-color: #fff;
+    border-radius: 4px;
+    color: #666;
+}
+.o__view-wrap li:hover, .repo__view-wrap li:hover {
 	color: #428bca;
 	cursor: pointer;
+}
+.repo__view-wrap li:hover {
+   background-color: #eee;
+}
+
+.repo__view-wrap li:hover > .name{
+    /*text-decoration: underline;*/
 }
 .username {
 	position: absolute;
@@ -21,13 +38,13 @@
 	right: 135px;
 }
 
-.o__view-wrap div {
+.o__view-wrap div, .repo__view-wrap div {
 	width: 310px;
 	height: 60px;
 	border-radius: 4px 4px 0 0;
 	border-bottom: 1px solid #e6e6e6;
 }
-.o__span:before {
+.o__span:before, .repo__span:before {
 	position: absolute;
 	content:"Gists";
 }
@@ -38,6 +55,16 @@
 	display: inline-block;
 	padding: 30px 0px 10px 0px;
 	border-left: 1px solid #e6e6e6;
+}
+
+.repo__view-wrap li {
+    font-size: 14px;
+    padding: 5px 0px 5px 0px;
+    border-top: 1px solid #e5e5e5;
+}
+
+.name {
+    color: #428bca;
 }
  .__0, .__1, .__2{
  	position: absolute;
@@ -59,7 +86,7 @@
  	left: 217px;
  }
 
-ul.o__ul {
+ul.o__ul, ul.repo__ul {
 	margin: 0;
 	padding: 0;
 }
@@ -81,5 +108,25 @@ ul.o__ul {
 	font-weight: bold;	
 	left: 80px;
 	top: 28px;
+}
 
+.header-repo::after {
+    position: absolute;
+    content: "GitHub Repos";
+    font-family: "Helvetica",Arial,sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    left: 80px;
+    top: 28px;
+
+}
+.icon {
+    padding-left: 20px;
+    padding-right: 10px;
+
+}
+.lang {
+    color: #444;
+    float:right;
+    padding-right: 20px;
 }

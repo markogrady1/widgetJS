@@ -13,20 +13,55 @@ var Widgit = (function() {
     var link = create("link");
     attr(link, "rel", "stylesheet");
     attr(link, "href", newPath);
-    appendElement(head, link);
+    var link2 = create("link");
+    attr(link2, "rel", "stylesheet");
+    attr(link2, "href", "https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.css");
 
+    appendElement(head, link, link2);
+
+
+    function reposWidget(selector, username, amount) {
+        apiRequest(username, {"urlParam":"users", "targetParam":"repos"} , function(res) {
+
+            var data = JSON.parse(res);
+            data = data.splice(0, amount);
+
+            console.log(data)
+            var key = ["name", "full_name", "language", "fork", "html_url"];
+            var repoArr = [];
+            for(var i in data) {
+                repoArr.push({
+                    name: data[i].name,
+                    full_name: data[i].full_name,
+                    language:  data[i].language,
+                    fork:  data[i].fork,
+                    html_url:  data[i].html_url,
+                    avatar_url: data[i].owner.avatar_url,
+                    owner_url: data[i].owner.html_url,
+                    username: data[i].owner.login
+                });
+            }
+            console.log(repoArr);
+            createType("repos", repoArr, selector);
+        });
+    }
 
 	function overviewWidget(selector, username) {
-		apiRequest(username, "users", function(res) {
+		apiRequest(username, {"urlParam":"users", "targetParam":""}, function(res) {
 			var data = JSON.parse(res);
-			var overviewArr = [data.public_repos,data.public_gists, data.followers, data.avatar_url, data.repos_url, data.gists_url,  data.followers_url, data.html_url, data.login];
-			createWidget("overview", overviewArr, selector);
+			var overviewArr = [data.public_repos, data.public_gists, data.followers, data.avatar_url, data.repos_url, data.gists_url,  data.followers_url, data.html_url, data.login];
+			createType("overview", overviewArr, selector);
 		});
 	}
 
-	function apiRequest(target, section, callback) {
-		var urlParam = section.replace("/", "");
-		var url = "https://api.github.com/" + urlParam + "/" + target.replace("/", "");
+	function apiRequest(user, urlData, callback) {
+		var urlParam = urlData.urlParam.replace("/", "");
+		var url = "https://api.github.com/" + urlParam
+            + "/" + user.replace("/", "");
+        var target = urlData.targetParam.length === 0
+            ? ""
+            : "/" +urlData.targetParam.replace("/","") + "?sort=updated";
+        url = url + target;
 		var xobj = new XMLHttpRequest();
 	    xobj.overrideMimeType("application/json");
 	    xobj.open('GET',url, true); 
@@ -38,33 +73,95 @@ var Widgit = (function() {
 	    xobj.send(null);  
 	}
 
-	function createWidget(widgetType, arr, selector) {
-		var elem = document.querySelectorAll(selector)[0];
-		if(typeof elem === "undefined") {
-			return 
-		} else {
-			var el = create("div")
-			attr(el, "class", "o__view-wrap");
-			addTitle(el, arr);
-			el = createElem(el, "div",1);
-			var ul = create("ul")
-			attr(ul, "class", "o__ul");
-			ul = createElem(ul, "li",3, arr,  true);
-			appendElement(el, ul)
-			elem.appendChild(el)
-			addData(selector, arr);
-			addAvatar(".o__view-wrap", arr)
-		}
-	}
+    function createType(widgetType, arr, selector) {
+        var elem = document.querySelectorAll(selector)[0];
+        if(typeof elem === "undefined") {
+            return;
+        } else {
+            buildElem(arr, elem, selector);
+            //if(widgetType === "repos") {
+            //    repo(arr, elem, selector);
+            //    buildElem(arr, elem, selector)
+            //} else if (widgetType === "overview") {
+            //    buildElem(arr, elem, selector)
+            //    overview(arr,elem,  selector);
+            //}
+        }
+    }
+
+    function buildElem(arr, elem, selector) {
+        var prependStr = typeof arr[0] == "object" ? "repo__" : "o__";
+        var el = create("div")
+        attr(el, "class", prependStr + "view-wrap");
+        addTitle(el, arr);
+        el = createElem(el, "div",1);
+        var ul = create("ul");
+        attr(ul, "class", prependStr + "ul");
+        ul =  typeof arr[0] == "object"
+            ? createRepoElem(ul, "li",3, arr,  true)
+            : createElem(ul, "li",3, arr,  true)
+        appendElement(el, ul);
+        elem.appendChild(el)
+        var nxt =  typeof arr[0] == "object"
+            ? repo(arr, elem, selector)
+            : overview(arr, elem, selector);
+    }
+
+
+    function repo(arr, elem, selector) {
+        //var el = create("div")
+        //attr(el, "class", "repo__view-wrap");
+        //addTitle(el, arr);
+        //el = createElem(el, "div",1);
+        //var ul = create("ul")
+        //attr(ul, "class", "repo__ul");
+        //ul = createRepoElem(ul, "li",3, arr,  true);
+        //appendElement(el, ul)
+        //elem.appendChild(el)
+        //addData(selector, arr);
+        addAvatar(".repo__view-wrap", arr)
+
+    }
+
+    function overview(arr, elem, selector) {
+        //var el = create("div")
+        //attr(el, "class", "o__view-wrap");
+        //addTitle(el, arr);
+        //el = createElem(el, "div",1);
+        //var ul = create("ul")
+        //attr(ul, "class", "o__ul");
+        //ul = createElem(ul, "li",3, arr,  true);
+        //appendElement(el, ul)
+        //elem.appendChild(el)
+        addData(selector, arr);
+        addAvatar(".o__view-wrap", arr)
+    }
 
 	function addTitle(elem, arr) {
-		elem.innerHTML = "<span class=username>" +arr[8] + "</span>";
+        var username;
+        username = (typeof arr[8] !== "object") ? arr[8] : arr[0].username;
+        if(typeof arr[8] !== "object") {
+
+        }
+		elem.innerHTML = "<span class=username>" + username + "</span>";
 	}
 
 	function addAvatar(element, data) {
+        var avatar;
+        var link;
+        if(typeof data[0] != "object") {
+            avatar = data[3];
+            link = data[7];
+        } else {
+            avatar = data[0].avatar_url;
+            link = data[0].owner_url;
+        }
+
 		var elem = document.querySelectorAll(element + " div")[0]
-		elem.innerHTML = "<a href=" + data[7] + " target=__blank><img class=avatar src=" +data[3] + "></a>";
-		attr(elem, "class", "header")
+		elem.innerHTML = "<a href=" + link + " target=__blank><img class=avatar src=" + avatar + "></a>";
+		attr(elem, "class", "header");
+        var title = (typeof data[0] !== "object") ? attr(elem, "class", "header"): attr(elem, "class", "header-repo");
+        //elem.innerHTML = title;
 	}
 
 	function addData(option, data) {
@@ -91,6 +188,26 @@ var Widgit = (function() {
 		}
 		return baseEl;
 	}
+
+    function createRepoElem(baseEl, elem, index, data, event) {
+        for(var i = 0; i < data.length; i++) {
+            var el = document.createElement(elem);
+            var a = document.createElement("a");
+            attr(a, "href", data[i].html_url);
+            var icon = data[i].fork ? "<span class='octicon octicon-repo-forked icon'></span>":"<span class='octicon octicon-repo icon'></span>";
+            el.innerHTML = icon + "<span class=name>"+data[i].name+"</span><span class=lang>"+data[i].language+"</span>"
+            a.appendChild(el);
+            if(event) {
+                (function(j){
+                    el.addEventListener("click", function() {
+                        action(j, data);
+                    });
+                }(i))
+            }
+            baseEl.appendChild(el)
+        }
+        return baseEl;
+    }
 
 	function action(index, data) {
 		switch(index) {
@@ -137,11 +254,12 @@ var Widgit = (function() {
 	}
 
 	return {
-		overView: overviewWidget
+		overView: overviewWidget,
+        repos: reposWidget
 	}
 
 })();
 
-
+// Widgit.repos(".repo-widgit-test", "markogrady1");
 
 
