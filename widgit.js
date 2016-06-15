@@ -171,20 +171,23 @@ var Widgit = (function() {
 
     function createRepoElem(baseEl, elem, index, data, event) {
         for(var i = 0; i < data.length; i++) {
+
             var el = document.createElement(elem);
             var a = document.createElement("a");
             attr(a, "href", data[i].html_url);
+            attr(a, "target", "__blank");
             var icon = data[i].fork ? "<span class='octicon octicon-repo-forked icon'></span>":"<span class='octicon octicon-repo icon'></span>";
             el.innerHTML = icon + "<span class=name>"+data[i].name+"</span><span class=lang>"+data[i].language+"</span>"
             a.appendChild(el);
-            if(event) {
-                (function(j){
-                    el.addEventListener("click", function() {
-                        action(j, data);
-                    });
-                }(i))
-            }
-            baseEl.appendChild(el)
+           console.log(data[i].hasOwnProperty("name"))
+            // if(event) {
+            //     (function(j){
+            //         el.addEventListener("click", function() {
+            //             action(j, data);
+            //         });
+            //     }(i))
+            // }
+            baseEl.appendChild(a)
         }
         return baseEl;
     }

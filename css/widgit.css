@@ -58,14 +58,21 @@
 	border-left: 1px solid #e6e6e6;
 }
 
-.repo__view-wrap li {
+ .repo__view-wrap li {
     font-size: 14px;
     padding: 5px 0px 5px 0px;
     border-top: 1px solid #e5e5e5;
 }
-
-.name {
+.octicon.octicon-repo.icon, .octicon.octicon-repo-forked.icon {
+	color: #666;
+    text-decoration: none;
+}
+a {
+	text-decoration: none;
+}
+a li span.name {
     color: #428bca;
+    text-decoration: none;
 }
  .__0, .__1, .__2{
  	position: absolute;
@@ -121,9 +128,10 @@ ul.o__ul, ul.repo__ul {
     top: 28px;
 
 }
-.icon {
+span.icon {
     padding-left: 20px;
     padding-right: 10px;
+    color:;
 
 }
 .lang {
