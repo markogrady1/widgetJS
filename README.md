@@ -34,4 +34,4 @@ This will result in the following widget.
 ![checkmark]( https://github.com/markogrady1/widgit.js/raw/master/demo/repo2.png)
 
 
-***NOTE: widgets are still being constructed.***
+***NOTE: More widgets are on their way.***
