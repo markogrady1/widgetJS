@@ -2,5 +2,3 @@
 .vscode
 .idea
 .DS_STORE
-composor.lock
-phpunit.xml
