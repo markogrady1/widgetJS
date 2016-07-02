@@ -16,7 +16,7 @@ Simply call the relevant widget function and pass it a location and your GitHub 
 ```
 This will result in the following widget.
 
-![checkmark]( https://github.com/markogrady1/widget.js/raw/master/demo/overview.png)
+![checkmark]( https://github.com/markogrady1/widgit.js/raw/master/demo/overview.png)
 
 ####The repo list widget.
 
