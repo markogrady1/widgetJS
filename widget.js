@@ -196,7 +196,7 @@ var Widget = (function() {
 		var style = document.currentScript.src;
 		var styles = document.getElementsByTagName("script");
 		var newPath = style.split("widget.js")[0];
-		newPath = newPath + "widget.css"
+		newPath = newPath.trim() + "widget.css"
 		var head = document.querySelectorAll("head")[0];
 		var link = create("link");
 		attr(link, "rel", "stylesheet");
