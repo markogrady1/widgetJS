@@ -1,4 +1,4 @@
-# widgit.js
+# widget.js
 ##### Library that provides small GitHub widgets to display various GitHub information directly into your website.
 - Enter the correct path to the widgit.js file.
 ```html
