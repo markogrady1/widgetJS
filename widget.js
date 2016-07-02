@@ -1,6 +1,6 @@
 "use strict";
 
-var Widgit = (function() {
+var Widget = (function() {
 
 	//ADD STYLES
 	addStyle();
@@ -195,7 +195,7 @@ var Widgit = (function() {
 	function addStyle() {
 		var style = document.currentScript.src;
 		var styles = document.getElementsByTagName("script");
-		var newPath = style.split("widgit.js")[0];
+		var newPath = style.split("widget.js")[0];
 		newPath = newPath + "css/widgit.css"
 		var head = document.querySelectorAll("head")[0];
 		var link = create("link");
