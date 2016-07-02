@@ -1,8 +1,8 @@
 # widget.js
 ##### Library that provides small GitHub widgets to display various GitHub information directly into your website.
-- Enter the correct path to the widgit.js file.
+- Enter the correct path to the widget.js file.
 ```html
-<script type="text/javascript" src="widgit.js"></script>
+<script type="text/javascript" src="widget.js"></script>
 ```
 ####The overview widget.
 ```html
@@ -11,12 +11,12 @@
 Simply call the relevant widget function and pass it a location and your GitHub username
 ```javascript
 <script>
-    Widgit.overview(".some-classname", "markogrady1");
+    Widget.overview(".some-classname", "markogrady1");
 </script>
 ```
 This will result in the following widget.
 
-![checkmark]( https://github.com/markogrady1/widgit.js/raw/master/demo/overview.png)
+![checkmark]( https://github.com/markogrady1/widget.js/raw/master/demo/overview.png)
 
 ####The repo list widget.
 
@@ -26,7 +26,7 @@ This will result in the following widget.
 Simply call the relevant widget function and pass it a location, your GitHub username and the amount of repos you wish to display
 ```javascript
 <script>
-    Widgit.repos(".another-classname", "markogrady1", 10);
+    Widget.repos(".another-classname", "markogrady1", 10);
 </script>
 ```
 This will result in the following widget.
