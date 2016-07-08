@@ -6,11 +6,11 @@ var Widget = (function () {
 	const tags = initStyle();
 
 	function reposWidget(selector, username, amount) {
-		apiRequest(username, {"urlParam": "users", "targetParam": "repos"}, function (res) {
+		apiRequest(username, {"urlParam": "users", "targetParam": "repos"}, res => {
 			var data = JSON.parse(res);
 			if (amount != null)
 				data = data.splice(0, amount);
-			extractRelevantData(data, function(repoArr) {
+			extractRelevantData(data, repoArr => {
 				createWidgetType(repoArr, selector);
 			});
 		});
@@ -29,7 +29,7 @@ var Widget = (function () {
 
 	function extractRelevantData(data, cb) {
 		var repoArr = [];
-		data.map( function(item) {
+		data.map( item => {
 			repoArr.push({
 				name: item.name,
 				full_name: item.full_name,
@@ -102,11 +102,11 @@ var Widget = (function () {
 		fn(baseElement, arr, selector );
 	}
 
-	function repo(arr, elem, selector) {
+	function repo(arr) {
 		addAvatar(".repo__view-wrap", arr);
 	}
 
-	function overview(arr, elem, selector) {
+	function overview(arr, selector) {
 		addData(selector, arr);
 		addAvatar(".o__view-wrap", arr);
 	}
@@ -119,8 +119,8 @@ var Widget = (function () {
 
 	function view(param, arr, selector) {
 		var tmp = typeof arr[0] == "object"
-			? repo(arr, param, selector)
-			: overview(arr, param, selector);
+			? repo(arr)
+			: overview(arr, selector);
 	}
 
 	function addTitle(elem, arr) {
