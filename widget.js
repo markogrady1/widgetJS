@@ -125,7 +125,7 @@ var Widget = (function () {
 		username = (typeof arr[8] !== "object") ? arr[8] : arr[0].username;
 		if (typeof arr[8] !== "object") {
 			//TODO...
-        }
+		}
 		elem.innerHTML = "<span class=username>" + username + "</span>";
 	}
 	
