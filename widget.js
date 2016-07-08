@@ -6,7 +6,7 @@ var Widget = (function () {
 	const tags = initStyle();
 
 	function reposWidget(selector, username, amount) {
-		apiRequest(username, { "urlParam": "users", "targetParam": "repos" }, function (res) {
+		apiRequest(username, {"urlParam": "users", "targetParam": "repos"}, function (res) {
 			var data = JSON.parse(res);
 			if (amount != null)
 				data = data.splice(0, amount);
@@ -24,13 +24,13 @@ var Widget = (function () {
 					username: item.owner.login
 				});
 			})
-            createType("repos", repoArr, selector);
-        });
-    }
+			createType("repos", repoArr, selector);
+		});
+	}
 
 	function attr(elem, name, value) {
 		if (!name || name.constructor != String) return '';
-		name = { 'for': 'htmlFor', 'className': 'class' }[name] || name;
+		name = {'for': 'htmlFor', 'className': 'class'}[name] || name;
 		if (typeof value != 'undefined') {
 			elem[name] = value;
 			if (elem.setAttribute)
@@ -40,7 +40,7 @@ var Widget = (function () {
 	}
 
 	function overviewWidget(selector, username) {
-		apiRequest(username, { "urlParam": "users", "targetParam": "" }, function (res) {
+		apiRequest(username, {"urlParam": "users", "targetParam": ""}, function (res) {
 			var data = JSON.parse(res);
 			var overviewArr = [data.public_repos, data.public_gists, data.followers, data.avatar_url, data.repos_url, data.gists_url, data.followers_url, data.html_url, data.login];
 			createType("overview", overviewArr, selector);
@@ -50,10 +50,10 @@ var Widget = (function () {
 	function apiRequest(user, urlData, callback) {
 		var urlParam = urlData.urlParam.replace("/", "");
 		var url = "https://api.github.com/" + urlParam
-            + "/" + user.replace("/", "");
+			+ "/" + user.replace("/", "");
 		var target = urlData.targetParam.length === 0
-            ? ""
-            : "/" + urlData.targetParam.replace("/", "") + "?sort=updated";
+			? ""
+			: "/" + urlData.targetParam.replace("/", "") + "?sort=updated";
 		url = url + target;
 		var xobj = new XMLHttpRequest();
 		xobj.overrideMimeType("application/json");
@@ -74,23 +74,23 @@ var Widget = (function () {
 			buildElem(arr, elem, selector);
 		}
 	}
-	
+
 	function buildElem(arr, baseElement, selector) {
 		var prependStr = typeof arr[0] == "object" ? "repo__" : "o__";
 		var el = divide(prependStr, arr);
 		list(prependStr, arr, el, baseElement)
 		view(baseElement, arr, selector);
 	}
-	
+
 	function divide(prependStr, arr) {
 		var el = create("div");
 		attr(el, "class", prependStr + "view-wrap");
 		addTitle(el, arr);
 		el = createElem(el, "div", 1);
-		
+
 		return el;
 	}
-	
+
 	function list(prependStr, arr, el, baseElement) {
 		var ul = create("ul");
 		attr(ul, "class", prependStr + "ul");
@@ -98,28 +98,28 @@ var Widget = (function () {
 		appendElement(el, ul);
 		baseElement.appendChild(el)
 	}
-	
+
 	function repo(arr, elem, selector) {
 		addAvatar(".repo__view-wrap", arr);
 	}
-	
+
 	function overview(arr, elem, selector) {
 		addData(selector, arr);
 		addAvatar(".o__view-wrap", arr);
 	}
-	
+
 	function element(param, arr) {
 		param = typeof arr[0] == "object"
-		 ? createRepoElem(param, "li", 3, arr, true)
-		 : createElem(param, "li", 3, arr, true)
+			? createRepoElem(param, "li", 3, arr, true)
+			: createElem(param, "li", 3, arr, true)
 	}
-	
+
 	function view(param, arr, selector) {
 		var e = typeof arr[0] == "object"
-		? repo(arr, param, selector)
-		: overview(arr, param, selector);
+			? repo(arr, param, selector)
+			: overview(arr, param, selector);
 	}
-	
+
 	function addTitle(elem, arr) {
 		var username;
 		username = (typeof arr[8] !== "object") ? arr[8] : arr[0].username;
@@ -128,7 +128,7 @@ var Widget = (function () {
 		}
 		elem.innerHTML = "<span class=username>" + username + "</span>";
 	}
-	
+
 	function addData(option, data) {
 		if (typeof option === "string") {
 			var strings = ["Repos", "Gists", "Followers"];
@@ -138,8 +138,8 @@ var Widget = (function () {
 			}
 		}
 	}
-	
-	
+
+
 	function createElem(baseEl, elem, index, data, event) {
 		for (var i = 1; i <= index; i++) {
 			var el = document.createElement(elem);
@@ -148,13 +148,13 @@ var Widget = (function () {
 					el.addEventListener("click", function () {
 						action(j, data);
 					});
-				} (i))
+				}(i))
 			}
 			baseEl.appendChild(el);
 		}
 		return baseEl;
 	}
-	
+
 	function action(index, data) {
 		var indexPosition = data.length - 2;
 		switch (index) {
@@ -190,7 +190,6 @@ var Widget = (function () {
 	}
 
 
-
 	function initStyle() {
 		var style = document.currentScript.src;
 		var styles = document.getElementsByTagName("script");
@@ -221,13 +220,14 @@ var Widget = (function () {
 		}
 		var elem = document.querySelectorAll(element + " div")[0];
 		elem.innerHTML = tags[0] + "a href=" + link + " target=__blank" +
-		tags[1] + tags[0] + "img class=avatar src=" + avatar +
-		tags[1] + tags[3] + "a" + tags[1];
+			tags[1] + tags[0] + "img class=avatar src=" + avatar +
+			tags[1] + tags[3] + "a" + tags[1];
 		attr(elem, "class", "header");
-		var title = (typeof data[0] !== "object") 
-		? attr(elem, "class", "header") 
-		: attr(elem, "class", "header-repo");
+		var title = (typeof data[0] !== "object")
+			? attr(elem, "class", "header")
+			: attr(elem, "class", "header-repo");
 	}
+
 	function createRepoElem(baseEl, elem, index, data, event) {
 		for (var i = 0; i < data.length; i++) {
 			var el = document.createElement(elem);
@@ -242,7 +242,7 @@ var Widget = (function () {
 		}
 		return baseEl;
 	}
-	
+
 	return {
 		overView: overviewWidget,
 		repos: reposWidget
