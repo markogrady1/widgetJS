@@ -87,7 +87,7 @@ var Widget = (function () {
         attr(el, "class", prependStr + "view-wrap");
         addTitle(el, arr);
         el = createElem(el, "div", 1);
-
+		
 		return el;
 	}
 
