@@ -74,8 +74,8 @@ var Widget = (function () {
 			buildElem(arr, elem, selector);
 		}
 	}
-
-    function buildElem(arr, baseElement, selector) {
+	
+	function buildElem(arr, baseElement, selector) {
 		var prependStr = typeof arr[0] == "object" ? "repo__" : "o__";
 		var el = divide(prependStr, arr);
 		list(prependStr, arr, el, baseElement)
