@@ -244,7 +244,7 @@ var Widget = (function () {
 
 	return {
 		overView: overviewWidget,
-        repos: reposWidget
+		repos: reposWidget
 	}
 
 })();
