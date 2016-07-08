@@ -80,55 +80,55 @@ var Widget = (function () {
 		var el = divide(prependStr, arr);
 		list(prependStr, arr, el, baseElement)
 		view(baseElement, arr, selector);
-    }
-
+	}
+	
 	function divide(prependStr, arr) {
 		var el = create("div");
-        attr(el, "class", prependStr + "view-wrap");
-        addTitle(el, arr);
-        el = createElem(el, "div", 1);
+		attr(el, "class", prependStr + "view-wrap");
+		addTitle(el, arr);
+		el = createElem(el, "div", 1);
 		
 		return el;
 	}
-
+	
 	function list(prependStr, arr, el, baseElement) {
 		var ul = create("ul");
-        attr(ul, "class", prependStr + "ul");
+		attr(ul, "class", prependStr + "ul");
 		element(ul, arr);
-        appendElement(el, ul);
-        baseElement.appendChild(el)
+		appendElement(el, ul);
+		baseElement.appendChild(el)
 	}
-
-    function repo(arr, elem, selector) {
-        addAvatar(".repo__view-wrap", arr);
-    }
-
-    function overview(arr, elem, selector) {
-        addData(selector, arr);
-        addAvatar(".o__view-wrap", arr);
-    }
-
+	
+	function repo(arr, elem, selector) {
+		addAvatar(".repo__view-wrap", arr);
+	}
+	
+	function overview(arr, elem, selector) {
+		addData(selector, arr);
+		addAvatar(".o__view-wrap", arr);
+	}
+	
 	function element(param, arr) {
 		param = typeof arr[0] == "object"
-            ? createRepoElem(param, "li", 3, arr, true)
-            : createElem(param, "li", 3, arr, true)
+		 ? createRepoElem(param, "li", 3, arr, true)
+		 : createElem(param, "li", 3, arr, true)
 	}
-
+	
 	function view(param, arr, selector) {
 		var e = typeof arr[0] == "object"
-            ? repo(arr, param, selector)
-            : overview(arr, param, selector);
+		? repo(arr, param, selector)
+		: overview(arr, param, selector);
 	}
-
+	
 	function addTitle(elem, arr) {
-        var username;
-        username = (typeof arr[8] !== "object") ? arr[8] : arr[0].username;
-        if (typeof arr[8] !== "object") {
-
+		var username;
+		username = (typeof arr[8] !== "object") ? arr[8] : arr[0].username;
+		if (typeof arr[8] !== "object") {
+			//TODO...
         }
 		elem.innerHTML = "<span class=username>" + username + "</span>";
 	}
-
+	
 	function addData(option, data) {
 		if (typeof option === "string") {
 			var strings = ["Repos", "Gists", "Followers"];
@@ -138,7 +138,8 @@ var Widget = (function () {
 			}
 		}
 	}
-
+	
+	
 	function createElem(baseEl, elem, index, data, event) {
 		for (var i = 1; i <= index; i++) {
 			var el = document.createElement(elem);
@@ -153,8 +154,7 @@ var Widget = (function () {
 		}
 		return baseEl;
 	}
-
-
+	
 	function action(index, data) {
 		var indexPosition = data.length - 2;
 		switch (index) {
