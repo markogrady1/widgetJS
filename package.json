@@ -13,7 +13,6 @@
     "url": "http://www.thereformat.com"
   },
   "devDependencies": {
-    "babel-cli": "^6.10.1",
-    "babel-preset-es2015": "^6.9.0"
+
   }
 }

@@ -2,3 +2,5 @@
 .vscode
 .idea
 .DS_STORE
+widget-compiled.js
+widget-compiled.js.map
