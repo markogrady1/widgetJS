@@ -6,12 +6,12 @@ var Widget = (function () {
 	const tags = initStyle();
 
 	function reposWidget(selector, username, amount) {
-        apiRequest(username, { "urlParam": "users", "targetParam": "repos" }, function (res) {
-            var data = JSON.parse(res);
-            if (amount != null)
+		apiRequest(username, { "urlParam": "users", "targetParam": "repos" }, function (res) {
+			var data = JSON.parse(res);
+			if (amount != null)
 				data = data.splice(0, amount);
-            var key = ["name", "full_name", "language", "fork", "html_url"];
-            var repoArr = [];
+			var key = ["name", "full_name", "language", "fork", "html_url"];
+			var repoArr = [];
 			data.map(function (item) {
 				repoArr.push({
 					name: item.name,
@@ -51,10 +51,10 @@ var Widget = (function () {
 		var urlParam = urlData.urlParam.replace("/", "");
 		var url = "https://api.github.com/" + urlParam
             + "/" + user.replace("/", "");
-        var target = urlData.targetParam.length === 0
+		var target = urlData.targetParam.length === 0
             ? ""
             : "/" + urlData.targetParam.replace("/", "") + "?sort=updated";
-        url = url + target;
+		url = url + target;
 		var xobj = new XMLHttpRequest();
 		xobj.overrideMimeType("application/json");
 		xobj.open('GET', url, true);
@@ -67,16 +67,16 @@ var Widget = (function () {
 	}
 
 	function createType(widgetType, arr, selector) {
-        var elem = document.querySelectorAll(selector)[0];
-        if (typeof elem === "undefined") {
-            return;
-        } else {
-            buildElem(arr, elem, selector);
-        }
-    }
+		var elem = document.querySelectorAll(selector)[0];
+		if (typeof elem === "undefined") {
+			return;
+		} else {
+			buildElem(arr, elem, selector);
+		}
+	}
 
     function buildElem(arr, baseElement, selector) {
-        var prependStr = typeof arr[0] == "object" ? "repo__" : "o__";
+		var prependStr = typeof arr[0] == "object" ? "repo__" : "o__";
 		var el = divide(prependStr, arr);
 		list(prependStr, arr, el, baseElement)
 		view(baseElement, arr, selector);
