@@ -1,8 +1,8 @@
 "use strict";
 
+
 var Widget = (function () {
 
-	//ADD STYLES
 	const tags = initStyle();
 
 	function reposWidget(selector, username, amount) {
@@ -10,21 +10,9 @@ var Widget = (function () {
 			var data = JSON.parse(res);
 			if (amount != null)
 				data = data.splice(0, amount);
-			const key = ["name", "full_name", "language", "fork", "html_url"];
-			var repoArr = [];
-			data.map(function (item) {
-				repoArr.push({
-					name: item.name,
-					full_name: item.full_name,
-					language: item.language,
-					fork: item.fork,
-					html_url: item.html_url,
-					avatar_url: item.owner.avatar_url,
-					owner_url: item.owner.html_url,
-					username: item.owner.login
-				});
-			})
-			createType("repos", repoArr, selector);
+			extractRelevantData(data, function(repoArr) {
+				createWidgetType(repoArr, selector);
+			});
 		});
 	}
 
@@ -39,11 +27,28 @@ var Widget = (function () {
 		return elem[name] || elem.getAttribute(name) || '';
 	}
 
+	function extractRelevantData(data, cb) {
+		var repoArr = [];
+		data.map( function(item) {
+			repoArr.push({
+				name: item.name,
+				full_name: item.full_name,
+				language: item.language,
+				fork: item.fork,
+				html_url: item.html_url,
+				avatar_url: item.owner.avatar_url,
+				owner_url: item.owner.html_url,
+				username: item.owner.login
+			});
+		});
+		cb(repoArr)
+	}
+
 	function overviewWidget(selector, username) {
 		apiRequest(username, {"urlParam": "users", "targetParam": ""}, function (res) {
 			const data = JSON.parse(res);
 			var overviewArr = [data.public_repos, data.public_gists, data.followers, data.avatar_url, data.repos_url, data.gists_url, data.followers_url, data.html_url, data.login];
-			createType("overview", overviewArr, selector);
+			createWidgetType(overviewArr, selector);
 		});
 	}
 
@@ -66,7 +71,7 @@ var Widget = (function () {
 		xobj.send(null);
 	}
 
-	function createType(widgetType, arr, selector) {
+	function createWidgetType(arr, selector) {
 		const elem = document.querySelectorAll(selector)[0];
 		if (typeof elem === "undefined") {
 			return;
@@ -78,8 +83,7 @@ var Widget = (function () {
 	function buildElem(arr, baseElement, selector) {
 		const prependStr = typeof arr[0] == "object" ? "repo__" : "o__";
 		const el = divide(prependStr, arr);
-		list(prependStr, arr, el, baseElement)
-		view(baseElement, arr, selector);
+		list(prependStr, arr, el, baseElement, selector, view);
 	}
 
 	function divide(prependStr, arr) {
@@ -91,12 +95,11 @@ var Widget = (function () {
 		return el;
 	}
 
-	function list(prependStr, arr, el, baseElement) {
+	function list(prependStr, arr, el, baseElement, selector, fn) {
 		const ul = create("ul");
 		attr(ul, "class", prependStr + "ul");
-		element(ul, arr);
-		appendElement(el, ul);
-		baseElement.appendChild(el)
+		setElement(ul, arr, el, baseElement);
+		fn(baseElement, arr, selector );
 	}
 
 	function repo(arr, elem, selector) {
@@ -133,9 +136,7 @@ var Widget = (function () {
 		if (typeof option === "string") {
 			const stringsArray = ["Repos", "Gists", "Followers"];
 			var d = document.querySelectorAll(option + " li");
-			for (var i = 0; i < d.length; i++) {
-				d[i].innerHTML = "<span class=__" + i + ">" + stringsArray[i] + "</span>" + data[i];
-			}
+			createHTML(d, stringsArray, data);
 		}
 	}
 
@@ -143,13 +144,7 @@ var Widget = (function () {
 	function createElem(baseEl, elem, index, data, event) {
 		for (var i = 1; i <= index; i++) {
 			const el = document.createElement(elem);
-			if (event) {
-				(function (j) {
-					el.addEventListener("click", function () {
-						action(j, data);
-					});
-				}(i))
-			}
+			addEventToElement(event, el, data, i);
 			baseEl.appendChild(el);
 		}
 		return baseEl;
@@ -198,11 +193,7 @@ var Widget = (function () {
 		newPath = newPath.trim() + "widget.css"
 		const head = document.querySelectorAll("head")[0];
 		const link = create("link");
-		attr(link, "rel", "stylesheet");
-		attr(link, "href", newPath);
-		const link2 = create("link");
-		attr(link2, "rel", "stylesheet");
-		attr(link2, "href", "https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.css");
+		var link2 = addAttributesToElement(link, newPath);
 		appendElement(head, link, link2);
 
 		return ["<", ">", "/>", "</"];
@@ -240,6 +231,38 @@ var Widget = (function () {
 			baseEl.appendChild(a);
 		}
 		return baseEl;
+	}
+
+	function createHTML(d, stringsArray, data) {
+		for (var i = 0; i < d.length; i++) {
+			d[i].innerHTML = "<span class=__" + i + ">" + stringsArray[i] + "</span>" + data[i];
+		}
+	}
+
+	function addAttributesToElement(link, newPath) {
+		attr(link, "rel", "stylesheet");
+		attr(link, "href", newPath);
+		const link2 = create("link");
+		attr(link2, "rel", "stylesheet");
+		attr(link2, "href", "https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.css");
+
+		return link2;
+	}
+
+	function setElement(ul, arr, el, baseElement) {
+		element(ul, arr);
+		appendElement(el, ul);
+		baseElement.appendChild(el)
+	}
+
+	function addEventToElement(event, el, data, i) {
+		if (event) {
+			(function (j) {
+				el.addEventListener("click", function () {
+					action(j, data);
+				});
+			}(i))
+		}
 	}
 
 	return {
