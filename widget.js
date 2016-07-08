@@ -10,7 +10,7 @@ var Widget = (function () {
 			var data = JSON.parse(res);
 			if (amount != null)
 				data = data.splice(0, amount);
-			var key = ["name", "full_name", "language", "fork", "html_url"];
+			const key = ["name", "full_name", "language", "fork", "html_url"];
 			var repoArr = [];
 			data.map(function (item) {
 				repoArr.push({
@@ -41,21 +41,21 @@ var Widget = (function () {
 
 	function overviewWidget(selector, username) {
 		apiRequest(username, {"urlParam": "users", "targetParam": ""}, function (res) {
-			var data = JSON.parse(res);
+			const data = JSON.parse(res);
 			var overviewArr = [data.public_repos, data.public_gists, data.followers, data.avatar_url, data.repos_url, data.gists_url, data.followers_url, data.html_url, data.login];
 			createType("overview", overviewArr, selector);
 		});
 	}
 
 	function apiRequest(user, urlData, callback) {
-		var urlParam = urlData.urlParam.replace("/", "");
+		const urlParam = urlData.urlParam.replace("/", "");
 		var url = "https://api.github.com/" + urlParam
 			+ "/" + user.replace("/", "");
-		var target = urlData.targetParam.length === 0
+		const target = urlData.targetParam.length === 0
 			? ""
 			: "/" + urlData.targetParam.replace("/", "") + "?sort=updated";
 		url = url + target;
-		var xobj = new XMLHttpRequest();
+		const xobj = new XMLHttpRequest();
 		xobj.overrideMimeType("application/json");
 		xobj.open('GET', url, true);
 		xobj.onreadystatechange = function () {
@@ -67,7 +67,7 @@ var Widget = (function () {
 	}
 
 	function createType(widgetType, arr, selector) {
-		var elem = document.querySelectorAll(selector)[0];
+		const elem = document.querySelectorAll(selector)[0];
 		if (typeof elem === "undefined") {
 			return;
 		} else {
@@ -76,8 +76,8 @@ var Widget = (function () {
 	}
 
 	function buildElem(arr, baseElement, selector) {
-		var prependStr = typeof arr[0] == "object" ? "repo__" : "o__";
-		var el = divide(prependStr, arr);
+		const prependStr = typeof arr[0] == "object" ? "repo__" : "o__";
+		const el = divide(prependStr, arr);
 		list(prependStr, arr, el, baseElement)
 		view(baseElement, arr, selector);
 	}
@@ -92,7 +92,7 @@ var Widget = (function () {
 	}
 
 	function list(prependStr, arr, el, baseElement) {
-		var ul = create("ul");
+		const ul = create("ul");
 		attr(ul, "class", prependStr + "ul");
 		element(ul, arr);
 		appendElement(el, ul);
@@ -109,13 +109,13 @@ var Widget = (function () {
 	}
 
 	function element(param, arr) {
-		param = typeof arr[0] == "object"
+		var tmp = typeof arr[0] == "object"
 			? createRepoElem(param, "li", 3, arr, true)
 			: createElem(param, "li", 3, arr, true)
 	}
 
 	function view(param, arr, selector) {
-		var e = typeof arr[0] == "object"
+		var tmp = typeof arr[0] == "object"
 			? repo(arr, param, selector)
 			: overview(arr, param, selector);
 	}
@@ -131,10 +131,10 @@ var Widget = (function () {
 
 	function addData(option, data) {
 		if (typeof option === "string") {
-			var strings = ["Repos", "Gists", "Followers"];
+			const stringsArray = ["Repos", "Gists", "Followers"];
 			var d = document.querySelectorAll(option + " li");
 			for (var i = 0; i < d.length; i++) {
-				d[i].innerHTML = "<span class=__" + i + ">" + strings[i] + "</span>" + data[i];
+				d[i].innerHTML = "<span class=__" + i + ">" + stringsArray[i] + "</span>" + data[i];
 			}
 		}
 	}
@@ -142,7 +142,7 @@ var Widget = (function () {
 
 	function createElem(baseEl, elem, index, data, event) {
 		for (var i = 1; i <= index; i++) {
-			var el = document.createElement(elem);
+			const el = document.createElement(elem);
 			if (event) {
 				(function (j) {
 					el.addEventListener("click", function () {
@@ -156,7 +156,7 @@ var Widget = (function () {
 	}
 
 	function action(index, data) {
-		var indexPosition = data.length - 2;
+		const indexPosition = data.length - 2;
 		switch (index) {
 			case 1:
 				window.open(data[indexPosition] + "?tab=repositories");
@@ -171,7 +171,7 @@ var Widget = (function () {
 	}
 
 	function createWrap(elem, obj) {
-		var el = create("div");
+		const el = create("div");
 		attr(el, obj, "o__view-wrap");
 	}
 
@@ -182,31 +182,30 @@ var Widget = (function () {
 	}
 
 	function create(el, tx) {
-		var el = document.createElement(el);
+		var newElement = document.createElement(el);
 		if (typeof tx !== "undefined") {
-			el.appendChild(document.createTextNode(tx));
+			newElement.appendChild(document.createTextNode(tx));
 		}
-		return el;
+		return newElement;
 	}
 
 
 	function initStyle() {
-		var style = document.currentScript.src;
-		var styles = document.getElementsByTagName("script");
+		const style = document.currentScript.src;
+		const styles = document.getElementsByTagName("script");
 		var newPath = style.split("widget.js")[0];
 		console.log(newPath)
 		newPath = newPath.trim() + "widget.css"
-		var head = document.querySelectorAll("head")[0];
-		var link = create("link");
+		const head = document.querySelectorAll("head")[0];
+		const link = create("link");
 		attr(link, "rel", "stylesheet");
 		attr(link, "href", newPath);
-		var link2 = create("link");
+		const link2 = create("link");
 		attr(link2, "rel", "stylesheet");
 		attr(link2, "href", "https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.css");
 		appendElement(head, link, link2);
-		var tags = ["<", ">", "/>", "</"]
 
-		return tags;
+		return ["<", ">", "/>", "</"];
 	}
 
 	function addAvatar(element, data) {
@@ -218,23 +217,23 @@ var Widget = (function () {
 			avatar = data[0].avatar_url;
 			link = data[0].owner_url;
 		}
-		var elem = document.querySelectorAll(element + " div")[0];
+		const elem = document.querySelectorAll(element + " div")[0];
 		elem.innerHTML = tags[0] + "a href=" + link + " target=__blank" +
 			tags[1] + tags[0] + "img class=avatar src=" + avatar +
 			tags[1] + tags[3] + "a" + tags[1];
 		attr(elem, "class", "header");
-		var title = (typeof data[0] !== "object")
+		var tmpElement = (typeof data[0] !== "object")
 			? attr(elem, "class", "header")
 			: attr(elem, "class", "header-repo");
 	}
 
 	function createRepoElem(baseEl, elem, index, data, event) {
 		for (var i = 0; i < data.length; i++) {
-			var el = document.createElement(elem);
-			var a = document.createElement("a");
+			const el = document.createElement(elem);
+			const a = document.createElement("a");
 			attr(a, "href", data[i].html_url);
 			attr(a, "target", "__blank");
-			var icon = data[i].fork ? tags[0] + "span class='octicon octicon-repo-forked icon'" + tags[1] +
+			const icon = data[i].fork ? tags[0] + "span class='octicon octicon-repo-forked icon'" + tags[1] +
 			tags[3] + "span" + tags[1] : tags[0] + "span class='octicon octicon-repo icon'" + tags[1] + tags[3] + "span" + tags[1];
 			el.innerHTML = icon + "<span class=name>" + data[i].name + "</span><span class=lang>" + data[i].language + "</span>"
 			a.appendChild(el);
