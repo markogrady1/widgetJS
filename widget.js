@@ -235,14 +235,14 @@ var Widget = (function () {
 			attr(a, "href", data[i].html_url);
 			attr(a, "target", "__blank");
 			var icon = data[i].fork ? tags[0] + "span class='octicon octicon-repo-forked icon'" + tags[1] +
-				tags[3] + "span" + tags[1] : tags[0] + "span class='octicon octicon-repo icon'" + tags[1] + tags[3] + "span" + tags[1];
-            el.innerHTML = icon + "<span class=name>" + data[i].name + "</span><span class=lang>" + data[i].language + "</span>"
-            a.appendChild(el);
-            baseEl.appendChild(a);
-        }
-        return baseEl;
-    }
-
+			tags[3] + "span" + tags[1] : tags[0] + "span class='octicon octicon-repo icon'" + tags[1] + tags[3] + "span" + tags[1];
+			el.innerHTML = icon + "<span class=name>" + data[i].name + "</span><span class=lang>" + data[i].language + "</span>"
+			a.appendChild(el);
+			baseEl.appendChild(a);
+		}
+		return baseEl;
+	}
+	
 	return {
 		overView: overviewWidget,
 		repos: reposWidget
