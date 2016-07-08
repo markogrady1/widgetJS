@@ -12,7 +12,7 @@ var Widget = (function () {
 				data = data.splice(0, amount);
             var key = ["name", "full_name", "language", "fork", "html_url"];
             var repoArr = [];
-			data.map(function(item) {
+			data.map(function (item) {
 				repoArr.push({
 					name: item.name,
 					full_name: item.full_name,
@@ -92,7 +92,7 @@ var Widget = (function () {
 	}
 
 	function list(prependStr, arr, el, baseElement) {
- 		var ul = create("ul");
+		var ul = create("ul");
         attr(ul, "class", prependStr + "ul");
 		element(ul, arr);
         appendElement(el, ul);
@@ -154,7 +154,7 @@ var Widget = (function () {
 		return baseEl;
 	}
 
-    
+
 	function action(index, data) {
 		var indexPosition = data.length - 2;
 		switch (index) {
@@ -189,7 +189,7 @@ var Widget = (function () {
 		return el;
 	}
 
-	
+
 
 	function initStyle() {
 		var style = document.currentScript.src;
@@ -221,20 +221,20 @@ var Widget = (function () {
             link = data[0].owner_url;
         }
 		var elem = document.querySelectorAll(element + " div")[0];
-		elem.innerHTML = tags[0] + "a href=" + link + " target=__blank" + 
-		tags[1] + tags[0] + "img class=avatar src=" + avatar + 
-		tags[1] + tags[3] + "a" + tags[1];
+		elem.innerHTML = tags[0] + "a href=" + link + " target=__blank" +
+			tags[1] + tags[0] + "img class=avatar src=" + avatar +
+			tags[1] + tags[3] + "a" + tags[1];
 		attr(elem, "class", "header");
         var title = (typeof data[0] !== "object") ? attr(elem, "class", "header") : attr(elem, "class", "header-repo");
 	}
-function createRepoElem(baseEl, elem, index, data, event) {
+	function createRepoElem(baseEl, elem, index, data, event) {
         for (var i = 0; i < data.length; i++) {
             var el = document.createElement(elem);
             var a = document.createElement("a");
             attr(a, "href", data[i].html_url);
             attr(a, "target", "__blank");
-            var icon = data[i].fork ? tags[0] + "span class='octicon octicon-repo-forked icon'" + tags[1] + 
-			tags[3] + "span" + tags[1] : tags[0] + "span class='octicon octicon-repo icon'" + tags[1] + tags[3] + "span" + tags[1];
+            var icon = data[i].fork ? tags[0] + "span class='octicon octicon-repo-forked icon'" + tags[1] +
+				tags[3] + "span" + tags[1] : tags[0] + "span class='octicon octicon-repo icon'" + tags[1] + tags[3] + "span" + tags[1];
             el.innerHTML = icon + "<span class=name>" + data[i].name + "</span><span class=lang>" + data[i].language + "</span>"
             a.appendChild(el);
             baseEl.appendChild(a);
