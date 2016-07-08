@@ -3,7 +3,7 @@
 var Widget = (function () {
 
 	//ADD STYLES
-	addStyle();
+	const tags = initStyle();
 
 	function reposWidget(selector, username, amount) {
         apiRequest(username, { "urlParam": "users", "targetParam": "repos" }, function (res) {
@@ -12,21 +12,32 @@ var Widget = (function () {
 				data = data.splice(0, amount);
             var key = ["name", "full_name", "language", "fork", "html_url"];
             var repoArr = [];
-            for (var i in data) {
-                repoArr.push({
-                    name: data[i].name,
-                    full_name: data[i].full_name,
-                    language: data[i].language,
-                    fork: data[i].fork,
-                    html_url: data[i].html_url,
-                    avatar_url: data[i].owner.avatar_url,
-                    owner_url: data[i].owner.html_url,
-                    username: data[i].owner.login
-                });
-            }
+			data.map(function(item) {
+				repoArr.push({
+					name: item.name,
+					full_name: item.full_name,
+					language: item.language,
+					fork: item.fork,
+					html_url: item.html_url,
+					avatar_url: item.owner.avatar_url,
+					owner_url: item.owner.html_url,
+					username: item.owner.login
+				});
+			})
             createType("repos", repoArr, selector);
         });
     }
+
+	function attr(elem, name, value) {
+		if (!name || name.constructor != String) return '';
+		name = { 'for': 'htmlFor', 'className': 'class' }[name] || name;
+		if (typeof value != 'undefined') {
+			elem[name] = value;
+			if (elem.setAttribute)
+				elem.setAttribute(name, value);
+		}
+		return elem[name] || elem.getAttribute(name) || '';
+	}
 
 	function overviewWidget(selector, username) {
 		apiRequest(username, { "urlParam": "users", "targetParam": "" }, function (res) {
@@ -64,19 +75,29 @@ var Widget = (function () {
         }
     }
 
-    function buildElem(arr, elem, selector) {
+    function buildElem(arr, baseElement, selector) {
         var prependStr = typeof arr[0] == "object" ? "repo__" : "o__";
-        var el = create("div");
+		var el = divide(prependStr, arr);
+		list(prependStr, arr, el, baseElement)
+		view(baseElement, arr, selector);
+    }
+
+	function divide(prependStr, arr) {
+		var el = create("div");
         attr(el, "class", prependStr + "view-wrap");
         addTitle(el, arr);
         el = createElem(el, "div", 1);
-        var ul = create("ul");
+
+		return el;
+	}
+
+	function list(prependStr, arr, el, baseElement) {
+ 		var ul = create("ul");
         attr(ul, "class", prependStr + "ul");
 		element(ul, arr);
         appendElement(el, ul);
-        elem.appendChild(el)
-		view(elem, arr, selector);
-    }
+        baseElement.appendChild(el)
+	}
 
     function repo(arr, elem, selector) {
         addAvatar(".repo__view-wrap", arr);
@@ -133,20 +154,7 @@ var Widget = (function () {
 		return baseEl;
 	}
 
-    function createRepoElem(baseEl, elem, index, data, event) {
-        for (var i = 0; i < data.length; i++) {
-            var el = document.createElement(elem);
-            var a = document.createElement("a");
-            attr(a, "href", data[i].html_url);
-            attr(a, "target", "__blank");
-            var icon = data[i].fork ? "<span class='octicon octicon-repo-forked icon'></span>" : "<span class='octicon octicon-repo icon'></span>";
-            el.innerHTML = icon + "<span class=name>" + data[i].name + "</span><span class=lang>" + data[i].language + "</span>"
-            a.appendChild(el);
-            baseEl.appendChild(a);
-        }
-        return baseEl;
-    }
-
+    
 	function action(index, data) {
 		var indexPosition = data.length - 2;
 		switch (index) {
@@ -181,18 +189,9 @@ var Widget = (function () {
 		return el;
 	}
 
-	function attr(elem, name, value) {
-		if (!name || name.constructor != String) return '';
-		name = { 'for': 'htmlFor', 'className': 'class' }[name] || name;
-		if (typeof value != 'undefined') {
-			elem[name] = value;
-			if (elem.setAttribute)
-				elem.setAttribute(name, value);
-		}
-		return elem[name] || elem.getAttribute(name) || '';
-	}
+	
 
-	function addStyle() {
+	function initStyle() {
 		var style = document.currentScript.src;
 		var styles = document.getElementsByTagName("script");
 		var newPath = style.split("widget.js")[0];
@@ -206,6 +205,9 @@ var Widget = (function () {
 		attr(link2, "rel", "stylesheet");
 		attr(link2, "href", "https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.css");
 		appendElement(head, link, link2);
+		var tags = ["<", ">", "/>", "</"]
+
+		return tags;
 	}
 
 	function addAvatar(element, data) {
@@ -219,10 +221,26 @@ var Widget = (function () {
             link = data[0].owner_url;
         }
 		var elem = document.querySelectorAll(element + " div")[0];
-		elem.innerHTML = "<a href=" + link + " target=__blank><img class=avatar src=" + avatar + "></a>";
+		elem.innerHTML = tags[0] + "a href=" + link + " target=__blank" + 
+		tags[1] + tags[0] + "img class=avatar src=" + avatar + 
+		tags[1] + tags[3] + "a" + tags[1];
 		attr(elem, "class", "header");
         var title = (typeof data[0] !== "object") ? attr(elem, "class", "header") : attr(elem, "class", "header-repo");
 	}
+function createRepoElem(baseEl, elem, index, data, event) {
+        for (var i = 0; i < data.length; i++) {
+            var el = document.createElement(elem);
+            var a = document.createElement("a");
+            attr(a, "href", data[i].html_url);
+            attr(a, "target", "__blank");
+            var icon = data[i].fork ? tags[0] + "span class='octicon octicon-repo-forked icon'" + tags[1] + 
+			tags[3] + "span" + tags[1] : tags[0] + "span class='octicon octicon-repo icon'" + tags[1] + tags[3] + "span" + tags[1];
+            el.innerHTML = icon + "<span class=name>" + data[i].name + "</span><span class=lang>" + data[i].language + "</span>"
+            a.appendChild(el);
+            baseEl.appendChild(a);
+        }
+        return baseEl;
+    }
 
 	return {
 		overView: overviewWidget,
